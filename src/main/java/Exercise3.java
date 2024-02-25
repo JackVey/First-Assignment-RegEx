@@ -11,7 +11,7 @@ public class Exercise3 {
     */
 
     public static String extractURL(String text) {
-        String regex = "write your regex pattern here!";  // TODO
+        String regex = "((http|https)://)(www.)?[-a-zA-Z0-9@:%._+~#?&/=]*\\.[a-z]{2,6}[-a-zA-Z0-9@:%._+~#?&/=]*";  // TODO
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
@@ -29,7 +29,13 @@ public class Exercise3 {
      */
 
     public static boolean validateEmail(String email) {
-        // TODO
+        String regex = "[-a-zA-Z0-9._?&]*@[-a-zA-Z0-9._]*";  // TODO
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        if (matcher.find()) {
+            return true;
+        }
         return false;
     }
 
@@ -38,9 +44,28 @@ public class Exercise3 {
     */
 
     public static List<String> findWordsWithRepeatLetters(String input) {
+
+        var regex = "\\b\\w+\\b";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+
         List<String> wordsWithRepeatLetters = new ArrayList<>();
+        while(matcher.find()){
+            var hasReLetters = false;
+            var word = matcher.group();
+            for (var i = 0; i < word.length(); i++) {
+                for (var j = i + 1; j < word.length(); j++) {
+                    if (word.charAt(i) == word.charAt(j)) {
+                        hasReLetters = true;
+                    }
+                }
+            }
+            if (hasReLetters){
+                wordsWithRepeatLetters.add(word);
+            }
+        }
         return wordsWithRepeatLetters;
-        // TODO
     }
 
     /*
@@ -51,11 +76,23 @@ public class Exercise3 {
 
     public static List<String> findReapetdWords(String input) {
         List<String> repeatedWords = new ArrayList<>();
+        var regex = "\\b\\w+\\b";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        while (matcher.find()){
+            var word = matcher.group();
+            if (word.length() % 2 == 1)
+                continue;
+            if ((word.substring(0,word.length()/2)).equals(word.substring(word.length()/2,word.length())))
+                repeatedWords.add(word);
+        }
         return repeatedWords;
-        // TODO
     }
 
     public static void main(String[] args) {
-        // test your code here!
+        List<String> wordsWithRepeatLetters = findReapetdWords("haha you are so funny");
+        for (String i : wordsWithRepeatLetters){
+            System.out.println(i);
+        }
     }
 }
